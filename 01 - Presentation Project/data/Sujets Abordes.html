@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Topics Animation</title>
+
+  <style>
+	  body {
+		margin: 0;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		font-family: "Segoe UI", Arial, sans-serif;
+		background: radial-gradient(circle at top, #1f2937, #020617);
+		color: #e5e7eb;
+
+		cursor: pointer;
+		overflow: hidden;
+	  }
+
+	  h2 {
+		font-size: 32px;
+		margin-bottom: 40px;
+		text-align: center;
+
+		background: linear-gradient(90deg, #38bdf8, #6366f1);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	  }
+
+	  ul {
+		list-style: none;
+		padding: 0;
+		width: 900px;
+		max-width: 90%;
+		text-align: center; /* centre tout le contenu */
+	  }
+
+	  li {
+		opacity: 0;
+		transform: translateY(30px) scale(0.95);
+
+		margin: 15px auto; /* centre le bloc */
+		padding: 16px 20px;
+
+		border-radius: 10px;
+		font-size: 20px;
+		text-align: center; /* centre le texte */
+
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+
+		backdrop-filter: blur(6px);
+
+		transition: all 0.5s ease;
+
+		width: fit-content; /* taille adaptative */
+		min-width: 300px;
+	  }
+
+	  li.visible {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		background: rgba(56, 189, 248, 0.08);
+		border: 1px solid rgba(56, 189, 248, 0.3);
+		box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+	  }
+	</style>
+</head>
+
+<body>
+
+  <h2>Sujets abordés</h2>
+
+  <ul id="topicsList">
+    <li>Utilisation du protocole DMX pour contrôler des lumières de scènes</li>
+    <li>Utilisation du logiciel QLC+ pour contrôler des lumières de scènes</li>
+	<li>Utilisation du logiciel OBS Studio pour contrôler des scènes de streaming</li>
+	<li>Utilisation du protocole MIDI pour lancer des scènes sur OBS Studio et QLC+</li>
+	<li>Débuter dans la progammation d'ESP32 avec Arduino et/ou ESP-IDF</li>
+	<li>Création d'un contrôleur MIDI USB avec un ESP32</li>
+	<li>Création d'un Serveur Web avec un ESP32</li>
+	<li>Appeler les services (API) depuis Home Assistant</li>
+  </ul>
+
+  <script>
+    let index = 0;
+    const items = document.querySelectorAll("#topicsList li");
+
+    document.addEventListener("click", function () {
+      if (index < items.length) {
+        items[index].classList.add("visible");
+        index++;
+      }
+    });
+  </script>
+
+</body>
+</html>

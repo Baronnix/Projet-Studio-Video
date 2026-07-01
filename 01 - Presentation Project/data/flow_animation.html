@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interactions ESP32 MIDI / PC / DMX / WiFi</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0b1020;
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .diagram {
+      position: relative;
+      width: 900px;
+      height: 520px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, #1e2746, #050814);
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    .title {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #e0e6ff;
+    }
+    .node {
+      position: absolute;
+      width: 170px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(10, 16, 40, 0.9);
+      border: 1px solid rgba(120, 150, 255, 0.5);
+      box-shadow: 0 0 18px rgba(80, 120, 255, 0.35);
+      text-align: center;
+    }
+    .node-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #fdfdff;
+    }
+    .node-sub {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+    .node-esp {
+      left: 50%;
+      top: 90px;
+      transform: translateX(-50%);
+      border-color: #4fd1c5;
+      box-shadow: 0 0 18px rgba(79, 209, 197, 0.5);
+    }
+    .node-pc {
+      left: 80px;
+      top: 210px;
+    }
+    .node-midi-app {
+      left: 80px;
+      top: 380px;
+    }
+    .node-dmx {
+      right: 80px;
+      top: 210px;
+    }
+    .node-lamp {
+      right: 80px;
+      top: 340px;
+    }
+    .node-phone {
+      left: 50%;
+      bottom: 40px;
+      transform: translateX(-50%);
+      border-color: #f6ad55;
+      box-shadow: 0 0 18px rgba(246, 173, 85, 0.6);
+    }
+
+    .label {
+      position: absolute;
+      font-size: 11px;
+      opacity: 0.8;
+      color: #cbd5ff;
+      pointer-events: none;
+    }
+
+    svg {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+    }
+
+    .arrow {
+      stroke-width: 2;
+      fill: none;
+    }
+    .arrow-midi {
+      stroke: #63b3ff;
+    }
+    .arrow-dmx {
+      stroke: #f56565;
+    }
+    .arrow-http {
+      stroke: #f6ad55;
+      stroke-dasharray: 6 4;
+    }
+
+    .pulse {
+      stroke-width: 4;
+      stroke-linecap: round;
+      opacity: 0;
+    }
+    .pulse-midi {
+      stroke: #63b3ff;
+    }
+    .pulse-dmx {
+      stroke: #f56565;
+    }
+    .pulse-http {
+      stroke: #f6ad55;
+    }
+
+    .legend {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 11px;
+      text-align: right;
+      color: #cbd5ff;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      margin-left: 4px;
+    }
+    .dot-midi { background: #63b3ff; }
+    .dot-dmx { background: #f56565; }
+    .dot-http { background: #f6ad55; }
+  </style>
+</head>
+<body>
+  <div class="diagram">
+    <div class="title">Flux MIDI, DMX et HTTP autour de l’ESP32</div>
+
+    <div class="legend">
+      <span>MIDI <span class="legend-dot dot-midi"></span></span>
+      <span>DMX <span class="legend-dot dot-dmx"></span></span>
+      <span>HTTP / WiFi <span class="legend-dot dot-http"></span></span>
+    </div>
+
+    <!-- Nœuds -->
+    <div class="node node-esp">
+      <div class="node-title">ESP32 (Contrôleur MIDI)</div>
+      <div class="node-sub">
+        - Envoie des messages MIDI USB<br>
+        - Reçoit des commandes HTTP<br>
+      </div>
+    </div>
+
+    <div class="node node-pc">
+      <div class="node-title">Ordinateur</div>
+      <div class="node-sub">
+        - Reçoit le périphérique MIDI USB<br>
+        - Fournit le port pour les apps MIDI<br>
+        - Connecté à l’adaptateur USB→DMX
+      </div>
+    </div>
+
+    <div class="node node-midi-app">
+      <div class="node-title">Applications MIDI</div>
+      <div class="node-sub">
+        - DAW / Synthés virtuels<br>
+        - Visualisation / Mapping MIDI<br>
+        - Réagissent aux notes & CC
+		- Traduit en DMX pour les lumières
+      </div>
+    </div>
+
+    <div class="node node-dmx">
+      <div class="node-title">Adaptateur USB → DMX</div>
+      <div class="node-sub">
+        - Reçoit des valeurs DMX du PC<br>
+        - Envoie le signal DMX sur le câble<br>
+        - Contrôle les projecteurs
+      </div>
+    </div>
+
+    <div class="node node-lamp">
+      <div class="node-title">Projecteur DMX</div>
+      <div class="node-sub">
+        - Reçoit les canaux DMX<br>
+        - Change couleur / intensité<br>
+        - Suivi des messages de l’ESP32
+      </div>
+    </div>
+
+    <div class="node node-phone">
+      <div class="node-title">Téléphone (WiFi)</div>
+      <div class="node-sub">
+        - Sur le même réseau WiFi<br>
+        - Envoie des requêtes HTTP à l’ESP32<br>
+        - Change presets / scènes lumières
+      </div>
+    </div>
+
+    <!-- Labels -->
+    <div class="label" style="left: 280px; top: 190px;">MIDI USB</div>
+    <div class="label" style="left: 100px; top: 340px;">MIDI vers apps</div>
+	<div class="label" style="left: 205px; top: 340px;">DMX vers USB</div>
+    <div class="label" style="right: 280px; top: 240px;">DMX via USB→DMX</div>
+	<div class="label" style="right: 130px; top: 310px;">DMX</div>
+    <div class="label" style="left: 54%; bottom: 160px; transform: translateX(-50%);">
+      HTTP (WiFi)
+    </div>
+
+    <!-- SVG pour les flèches et pulses -->
+    <svg viewBox="0 0 900 520">
+      <defs>
+        <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0 0, 6 3, 0 6" fill="#cbd5ff" />
+        </marker>
+      </defs>
+
+      <!-- MIDI: ESP32 -> PC -->
+      <line id="midi1" class="arrow arrow-midi"
+            x1="450" y1="150" x2="250" y2="240"
+            marker-end="url(#arrowHead)" />
+      <!-- MIDI: PC -> Apps -->
+      <line id="midi2" class="arrow arrow-midi"
+            x1="180" y1="320" x2="180" y2="380"
+            marker-end="url(#arrowHead)" />
+	      <!-- MIDI: Apps -> PC -->
+      <line id="dmxusb" class="arrow arrow-dmx"
+            x1="200" y1="380" x2="200" y2="320"
+            marker-end="url(#arrowHead)" />
+
+      <!-- DMX: PC -> USB-DMX -> Lamp -->
+<line id="dmx1" class="arrow arrow-dmx"
+      x1="260" y1="270" x2="650" y2="260"
+      marker-end="url(#arrowHead)" />
+
+      <line id="dmx2" class="arrow arrow-dmx"
+            x1="735" y1="290" x2="735" y2="350"
+            marker-end="url(#arrowHead)" />
+
+      <!-- HTTP: Phone -> ESP32 -->
+<path id="http1" class="arrow arrow-http"
+      d="M 450 400 C 450 350 450 250 450 150"
+      marker-end="url(#arrowHead)" />
+
+
+      <!-- Pulses animés -->
+      <line id="pulseMidi1" class="pulse pulse-midi"
+            x1="450" y1="150" x2="250" y2="240" />
+      <line id="pulseMidi2" class="pulse pulse-midi"
+            x1="180" y1="320" x2="180" y2="380" />
+			
+			<line id="pulseDmxUsb" class="pulse pulse-dmx"
+            x1="200" y1="380" x2="200" y2="320" />
+
+	<line id="pulseDmx1" class="pulse pulse-dmx"
+      x1="260" y1="270" x2="650" y2="260" />
+      <line id="pulseDmx2" class="pulse pulse-dmx"
+            x1="735" y1="290" x2="735" y2="350" />
+
+<path id="pulseHttp1" class="pulse pulse-http"
+      d="M 450 400 C 450 350 450 250 450 150" />
+
+    </svg>
+  </div>
+
+  <script>
+    function animateLinePulse(line, duration) {
+      line.style.opacity = 1;
+      line.style.strokeDasharray = "0, 999";
+      const length = line.getTotalLength ? line.getTotalLength() : 300;
+      let start = null;
+
+      function frame(ts) {
+        if (!start) start = ts;
+        const progress = (ts - start) / duration;
+        if (progress >= 1) {
+          line.style.opacity = 0;
+          return;
+        }
+        const dash = length * progress;
+        line.style.strokeDasharray = dash + ", 999";
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function animatePathPulse(path, duration) {
+      path.style.opacity = 1;
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      let start = null;
+
+      function frame(ts) {
+        if (!start) start = ts;
+        const progress = (ts - start) / duration;
+        if (progress >= 1) {
+          path.style.opacity = 0;
+          path.style.strokeDashoffset = length;
+          return;
+        }
+        path.style.strokeDashoffset = length * (1 - progress);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const pulseMidi1 = document.getElementById("pulseMidi1");
+    const pulseMidi2 = document.getElementById("pulseMidi2");
+    const pulseDmx1  = document.getElementById("pulseDmx1");
+    const pulseDmx2  = document.getElementById("pulseDmx2");
+    const pulseHttp1 = document.getElementById("pulseHttp1");
+
+    function cycle() {
+	// 4) Phone -> ESP32 (HTTP)
+		animatePathPulse(pulseHttp1, 900)
+	  
+      // 1) ESP32 -> PC (MIDI)
+      setTimeout(() => animatePathPulse(pulseMidi1, 600), 1000);
+
+      // 2) PC -> Apps MIDI
+      setTimeout(() => animateLinePulse(pulseMidi2, 600), 1700);
+
+	  setTimeout(() => animateLinePulse(pulseDmxUsb, 600), 2400);
+
+      // 3) PC -> USB-DMX -> Lamp
+      setTimeout(() => animateLinePulse(pulseDmx1, 700), 3100);
+      setTimeout(() => animateLinePulse(pulseDmx2, 500), 3900);
+
+
+
+      // Boucle
+      setTimeout(cycle, 5000);
+    }
+
+    setTimeout(cycle, 800);
+  </script>
+</body>
+</html>
