@@ -5,7 +5,7 @@ L’idée est de proposer une solution évolutive, open‑source et low‑cost (
 
 # 📺 Vidéo
 
-Lien Youtube: [https://www.youtube.com/watch?v=GV8tmg4VnaE](https://www.youtube.com/watch?v=GV8tmg4VnaE)
+Lien Youtube: [https://youtu.be/vdlXbfqqSvw](https://youtu.be/vdlXbfqqSvw)
 
 # 🧩 Objectif
 
