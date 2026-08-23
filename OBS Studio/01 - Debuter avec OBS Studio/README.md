@@ -19,7 +19,7 @@ Tu vas apprendre à :
 
 # 📺 Vidéo
 
-Lien Youtube: [https://www.youtube.com/@Baronnix/playlists](https://www.youtube.com/@Baronnix/playlists)
+Lien Youtube: [https://www.youtube.com/watch?v=XXCFOh5TN9Q](https://www.youtube.com/watch?v=XXCFOh5TN9Q)
 
 # 🎥 Installation et configuration d’OBS Studio
 
