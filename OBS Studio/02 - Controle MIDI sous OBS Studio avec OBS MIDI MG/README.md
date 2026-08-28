@@ -147,13 +147,13 @@ Allume-le avant de lancer OBS (important pour la détection).
 3. Renomme la collection en ESP32S3 Binding
 4. Edite la collection
 5. On va créer plusieurs actions de transition de scènes sur appui d'un bouton, pour chaque acion suit les étapes suivantes    
-    🧩 Étape 1 : Ajouter un binding
+    1. 🧩 Étape 1 : Ajouter un binding
         1. Crée une action et nomme la
         2. Edite le message du binding
         3. Passe en mode écoute
         4. Appui sur le bouton à associer de ton contrôleur
         5. Confirme
-    🧩 Étape 2 : Assigner l’action
+    2. 🧩 Étape 2 : Assigner l’action
         1. Edite l'action à éxecuter
         2. Rentre les informations suivantes
             * Category: Scenes
