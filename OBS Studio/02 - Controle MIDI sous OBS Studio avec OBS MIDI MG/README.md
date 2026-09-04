@@ -20,7 +20,7 @@ en utilisant le protocole MIDI USB et le plugin OBS MIDI MG.
 
 # 📺 Vidéo
 
-Lien Youtube: [https://www.youtube.com/@Baronnix/playlists](https://www.youtube.com/@Baronnix/playlists)
+Lien Youtube: [https://www.youtube.com/watch?v=t0nx75UbxpM](https://www.youtube.com/watch?v=t0nx75UbxpM)
 
 
 # 🎛️ Présentation des deux contrôleurs
