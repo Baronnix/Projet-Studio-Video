@@ -11,7 +11,7 @@ Cette configuration est idéale pour les créateurs qui veulent stream + enregis
 
 # 📺 Vidéo
 
-Lien Youtube: [https://www.youtube.com/@Baronnix/playlists](https://www.youtube.com/@Baronnix/playlists)
+Lien Youtube: [https://www.youtube.com/watch?v=T9nMMn2NH-k](https://www.youtube.com/watch?v=T9nMMn2NH-k)
 
 # 🎥 1. Paramètres Vidéo : Base vs Sortie
 
