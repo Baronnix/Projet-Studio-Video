@@ -124,17 +124,15 @@ Limites à connaître : latence RTSP (≈ 0,5–2 s), pas d’audio pro, moteurs
 
 Objectif : identifier le **meilleur moment d’achat**. Relever le prix chaque semaine (Amazon, boutique Reolink, Fnac/Darty…) ou utiliser un suivi automatique (Keepa, CamelCamelCamel, alerte prix).
 
-| Date | Événement | Prix relevé (€) | Source | Commentaire |
-|---|---|---|---|---|
-| 01/10 | Début de période | `[à compléter]` | | Prix de référence |
-| ~08/10 | Prime Big Deal Days (Amazon) | `[à compléter]` | | 1ʳᵉ fenêtre promo |
-| 15/10 | | `[à compléter]` | | |
-| 01/11 | | `[à compléter]` | | |
-| ~27/11 | **Black Friday** | `[à compléter]` | | Souvent le plus bas de l’année |
-| ~30/11 | **Cyber Monday** | `[à compléter]` | | |
-| 15/12 | Avant Noël | `[à compléter]` | | Prix souvent remontés |
-| ~07/01 | **Soldes d’hiver** (France) | `[à compléter]` | | 2ᵉ fenêtre promo |
-| 31/01 | Fin de période | `[à compléter]` | | |
+| Date | Événement | Commentaire |
+|---|---|---|
+| 01/10 | Début de période | Prix de référence |
+| ~08/10 | Prime Big Deal Days (Amazon) | 1ʳᵉ fenêtre promo |
+| ~27/11 | **Black Friday** | Souvent le plus bas de l’année |
+| ~30/11 | **Cyber Monday** | |
+| 15/12 | Avant Noël | | Prix souvent remontés |
+| ~07/01 | **Soldes d’hiver** (France) | 2ᵉ fenêtre promo |
+| 31/01 | Fin de période | |
 
 **Tendance attendue** (à confirmer par les relevés) : prix stable en octobre, **baisse marquée autour du Black Friday**, remontée en décembre, nouvelle baisse aux soldes de janvier.
 
