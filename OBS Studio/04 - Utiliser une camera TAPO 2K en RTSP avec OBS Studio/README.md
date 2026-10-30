@@ -157,6 +157,15 @@ Objectif : identifier le **meilleur moment d’achat**. Relever le prix chaque s
 ### Étape 3 — Fixer l’adresse IP
 1. App Tapo → **Infos sur l’appareil** → noter l’**adresse IP**.
 2. Dans le routeur, créer une **réservation DHCP** pour cette IP.
+3. Associer la MAC à une IP, par ex. `192.168.1.50`.
+4. Redémarrer la caméra et vérifier l'IP dans l'app.
+
+| Box | Emplacement indicatif |
+|---|---|
+| Freebox | Paramètres de la Freebox → DHCP → Baux statiques |
+| Livebox | Configuration avancée → Réseau → DHCP → Adresses IP statiques |
+| SFR Box | Réseau → DHCP → Adresses IP fixes |
+| Bbox | Services de la Box → DHCP → Adresses IP statiques |
 
 ### Étape 4 — Tester le flux dans VLC
 **Média → Ouvrir un flux réseau** :
@@ -182,11 +191,31 @@ Si l’image s’affiche, le RTSP fonctionne.
 > Alternative : source **Source vidéo VLC** (playlist avec l’URL RTSP) si la Source média saccade.
 
 ### Étape 6 — Optimiser
-- Préférer **Ethernet** ou Wi-Fi 5 GHz pour le PC.
-- Désactiver la **vision nocturne auto** et les **masques de confidentialité** dans l’app.
-- En cas de désynchronisation audio/vidéo : **Propriétés audio avancées** → ajouter un **décalage de synchronisation** sur le micro.
 
----
+- Préférer **Ethernet** ou Wi-Fi 5 GHz pour le PC.
+- Désactiver les options dans l’app.
+- En cas de désynchronisation audio/vidéo : **Propriétés audio avancées** → ajouter un **décalage de synchronisation** sur le micro.
+- Bloquer l'accès internet de la caméra
+
+## 9. Bloquer l'accès internet de la caméra (Optionnel)
+
+Objectif : la caméra fonctionne **uniquement en local** (Home Assistant), sans envoyer de flux vers le cloud.
+
+> Faites-le **après** avoir tout configuré dans l'app (compte caméra, détection, mises à jour).
+
+### Options (de la plus simple à la plus robuste)
+1. **Contrôle parental / blocage d'appareil** de la box : bloquer l'accès internet pour la MAC de la caméra en conservant le réseau local.
+2. **Pare-feu du routeur** (OpenWrt, pfSense, OPNsense, UniFi…) : règle `DROP` du trafic sortant WAN pour l'IP `192.168.1.50`.
+3. **VLAN IoT dédié** : caméras isolées, internet bloqué, seul Home Assistant peut joindre la caméra (ports 554 et 2020, plus 443 pour Tapo Control).
+
+### Conseils
+- **Autoriser le NTP** (UDP 123) si possible, sinon l'horloge de la caméra peut dériver (horodatage incorrect).
+- Réautoriser ponctuellement internet pour les **mises à jour de firmware**.
+- Tester plusieurs jours la stabilité hors ligne.
+
+### Ce que l'on perd
+- Vue à distance et notifications via l'app Tapo (remplacées par Home Assistant).
+- Mises à jour automatiques.
 
 ## 10. Dépannage
 
@@ -197,7 +226,5 @@ Si l’image s’affiche, le RTSP fonctionne.
 | Flux qui se coupe | Réserver l’IP, Wi-Fi plus proche, délai de reconnexion à 2 s |
 | Image pixelisée en zoom | Limiter le zoom numérique ou passer à une caméra 4K / zoom optique |
 | Accès impossible hors app | Mettre à jour le firmware ; recréer le compte caméra |
-
----
 
 *Les caractéristiques et prix des caméras sont indicatifs : vérifiez la fiche technique officielle et la version exacte avant achat.*
